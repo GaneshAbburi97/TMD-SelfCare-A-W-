@@ -82,6 +82,14 @@ const run = async () => {
         'VulnerabilityTestReport.xlsx', 
         (i) => `TC-${i.toString().padStart(3, '0')}: Prevent XSS/Injection on attack vector - Vector_${i}`
     );
+
+    // 5. Appium Mobile Automation Test
+    await generateReport(
+        'Appium Test Report', 
+        'Android Appium Mobile Automation Suite', 
+        'AppiumTestReport.xlsx', 
+        (i) => `TC-${i.toString().padStart(3, '0')}: Verify native Android screen & interaction - MobileScreen_${i}`
+    );
 };
 
 run().catch(console.error);
