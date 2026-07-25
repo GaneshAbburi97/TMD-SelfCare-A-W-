@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TMD Care AI</string>
+    <string name="app_title">TMD Care AI – Jaw Pain Management</string>
+    <string name="pain_label">Pain Intensity (0-10)</string>
+    <string name="stress_label">Stress Level (0-10)</string>
+    <string name="log_btn">Log Daily Entry</string>
+    <string name="default_web_client_id">448912814169-207qr3gijoectg76eu4jtcqi12qc8uqa.apps.googleusercontent.com</string>
+</resources>

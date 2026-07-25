@@ -1,0 +1,371 @@
+[
+  {
+    "endpoint": "/auth/v1/authorize",
+    "method": "GET",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "Supabase auth client usage",
+    "safe_to_test": false,
+    "notes": "Provider redirect endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/auth/v1/logout",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "Supabase auth client usage",
+    "safe_to_test": true,
+    "notes": "Session invalidation endpoint"
+  },
+  {
+    "endpoint": "/auth/v1/recover",
+    "method": "POST",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "Supabase auth client usage",
+    "safe_to_test": false,
+    "notes": "May send email; skipped by default"
+  },
+  {
+    "endpoint": "/auth/v1/signup",
+    "method": "POST",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "Supabase auth client usage",
+    "safe_to_test": false,
+    "notes": "May create a user; skipped by default"
+  },
+  {
+    "endpoint": "/auth/v1/token?grant_type=id_token",
+    "method": "POST",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "Supabase auth client usage",
+    "safe_to_test": false,
+    "notes": "Requires Google ID token; skipped by default"
+  },
+  {
+    "endpoint": "/auth/v1/token?grant_type=password",
+    "method": "POST",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "Supabase auth client usage",
+    "safe_to_test": false,
+    "notes": "Requires supplied credentials; skipped by default"
+  },
+  {
+    "endpoint": "/auth/v1/user",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "Supabase auth client usage",
+    "safe_to_test": true,
+    "notes": "Current authenticated user"
+  },
+  {
+    "endpoint": "/functions/v1/chat",
+    "method": "OPTIONS",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\tmd-web\\supabase\\functions\\chat\\index.ts",
+    "safe_to_test": true,
+    "notes": "CORS preflight"
+  },
+  {
+    "endpoint": "/functions/v1/chat",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\tmd-web\\supabase\\functions\\chat\\index.ts",
+    "safe_to_test": true,
+    "notes": "Safe probe uses minimal messages body"
+  },
+  {
+    "endpoint": "/functions/v1/groq-chat",
+    "method": "OPTIONS",
+    "expected_auth": "public",
+    "role": "public",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\functions\\groq-chat\\index.ts",
+    "safe_to_test": true,
+    "notes": "CORS preflight"
+  },
+  {
+    "endpoint": "/functions/v1/groq-chat",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\functions\\groq-chat\\index.ts",
+    "safe_to_test": true,
+    "notes": "Safe probe uses minimal messages body"
+  },
+  {
+    "endpoint": "/rest/v1/assessment_records",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/assessment_records",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/assessment_records",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/assessment_records",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/assessment_records",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/exercise_records",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/exercise_records",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/exercise_records",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/exercise_records",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/exercise_records",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/pain_records",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/pain_records",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/pain_records",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/pain_records",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/pain_records",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/sleep_records",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/sleep_records",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/sleep_records",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/sleep_records",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/sleep_records",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/users",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/users",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/users",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/users",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/users",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/wellness_records",
+    "method": "DELETE",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Destructive endpoint; skipped by default"
+  },
+  {
+    "endpoint": "/rest/v1/wellness_records",
+    "method": "GET",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/wellness_records",
+    "method": "HEAD",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": true,
+    "notes": "PostgREST table with RLS enabled"
+  },
+  {
+    "endpoint": "/rest/v1/wellness_records",
+    "method": "PATCH",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  },
+  {
+    "endpoint": "/rest/v1/wellness_records",
+    "method": "POST",
+    "expected_auth": "requires-auth",
+    "role": "requires-auth",
+    "source": "D:\\projects\\AndroidStudioProjects\\TMD WEB\\TMDApp2\\supabase\\schema.sql",
+    "safe_to_test": false,
+    "notes": "Write endpoint; do not run without explicit confirmation"
+  }
+]

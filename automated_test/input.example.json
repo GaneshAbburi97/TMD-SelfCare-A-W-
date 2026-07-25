@@ -1,0 +1,13 @@
+{
+  "baseUrl": "https://YOUR_PROJECT.supabase.co",
+  "tokens": {
+    "anon": "SUPABASE_ANON_KEY",
+    "user": "USER_JWT",
+    "admin": "ADMIN_OR_SERVICE_ROLE_JWT_OPTIONAL",
+    "otherUser": "SECOND_USER_JWT_OPTIONAL"
+  },
+  "ids": {
+    "userId": "CURRENT_USER_UUID_OPTIONAL",
+    "otherUserId": "OTHER_USER_UUID_OPTIONAL"
+  }
+}

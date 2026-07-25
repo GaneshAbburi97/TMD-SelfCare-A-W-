@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>3D Face Model</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: transparent; /* Allows WebView background to show through */
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- Import maps polyfill -->
+    <!-- Remove this if you don't need to support older browsers -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        let scene, camera, renderer, raycaster, mouse;
+        let model;
+        let selectedMesh = null;
+        let originalColor = null;
+
+        // Regions we care about mapping
+        const selectableRegions = [
+            'left_cheek', 
+            'right_cheek', 
+            'left_jaw', 
+            'right_jaw', 
+            'chin', 
+            'neck'
+        ];
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 0, 3); // Adjust based on model scale
+
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 2).normalize();
+            scene.add(directionalLight);
+
+            // Raycaster for click detection
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // Load Model
+            const loader = new GLTFLoader();
+            // In Android WebView, local assets are served from the root path relatively or absolute file:///android_asset/
+            // Since this HTML is in assets, it can load sibling files.
+            loader.load('free_basemesh_head_woman.glb', function(gltf) {
+                model = gltf.scene;
+                
+                // Center model
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.sub(center);
+
+                // Auto-scale to fit view
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 2.0 / maxDim; // target size is ~2 units
+                model.scale.setScalar(scale);
+
+                scene.add(model);
+                animate();
+            }, undefined, function(error) {
+                console.error(error);
+                if (window.Android) {
+                    window.Android.onError("Error loading model: " + error);
+                }
+            });
+
+            // Event listeners
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('pointerdown', onPointerDown, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+    function onPointerDown(event) {
+        // Calculate mouse position in normalized device coordinates (-1 to +1)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Raycast
+        raycaster.setFromCamera(mouse, camera);
+
+        if (model) {
+            const intersects = raycaster.intersectObject(model, true);
+            
+            if (intersects.length > 0) {
+                let clickedMesh = intersects[0].object;
+
+                // If user clicked a region of interest
+                // The provided model uses generic names like Object_4. Allow clicking any mesh.
+                let regionName = clickedMesh.name.toLowerCase();
+                console.log("Clicked: ", clickedMesh.name);
+                
+                // We'll just select whatever was clicked to demonstrate functionality
+                selectRegion(clickedMesh);
+            }
+        }
+    }
+
+        function selectRegion(mesh) {
+            // Reset previous selection
+            if (selectedMesh) {
+                selectedMesh.material.color.copy(originalColor);
+                selectedMesh.material.emissive.setHex(0x000000);
+            }
+
+            // Save new selection
+            selectedMesh = mesh;
+            // Store original color if not stored
+            if (!originalColor || selectedMesh !== mesh) {
+                // Ensure material is cloned so we don't change all parts sharing it
+                if (!mesh.userData.materialCloned) {
+                    mesh.material = mesh.material.clone();
+                    mesh.userData.materialCloned = true;
+                }
+                originalColor = mesh.material.color.clone();
+            }
+
+            // Highlight new selection
+            mesh.material.emissive.setHex(0xff0000);
+            mesh.material.emissiveIntensity = 0.5;
+
+            // Notify Android App
+            if (window.Android && window.Android.onRegionSelected) {
+                // Format the name nicely (e.g., "left_cheek" -> "Left Cheek")
+                const formattedName = formatRegionName(mesh.name);
+                window.Android.onRegionSelected(formattedName);
+            }
+        }
+
+        function formatRegionName(name) {
+            return name.split('_')
+                       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                       .join(' ');
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Slight rotation for dynamic feel? Optional.
+            // if (model) model.rotation.y += 0.005; 
+            renderer.render(scene, camera);
+        }
+
+        // Initialize when DOM is ready
+        window.onload = init;
+    </script>
+</body>
+</html>
