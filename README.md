@@ -1,4 +1,4 @@
-# 🩺 TMD SelfCare — Cross-Platform Digital Therapeutics Monorepo
+# 🩺 TMD SelfCare — Cross-Platform Digital Therapeutics
 
 [![CI/CD Pipeline](https://github.com/GaneshAbburi97/TMD-SelfCare-A-W-/actions/workflows/ci.yml/badge.svg)](https://github.com/GaneshAbburi97/TMD-SelfCare-A-W-/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
