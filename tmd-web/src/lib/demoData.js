@@ -19,15 +19,15 @@ const getRelativeTimestamp = (daysAgo, hour = 9, minute = 30) => {
 
 export const INITIAL_DEMO_USER = {
   id: 'demo-patient-001',
-  name: 'Dr. Alex Morgan',
+  name: 'Dr. Ganesh',
   email: 'demo.patient@tmdcare.com',
-  date_of_birth: '1995-05-14',
+  date_of_birth: '1996-08-20',
   height_cm: '178',
   weight_kg: '72',
   user_metadata: {
-    name: 'Dr. Alex Morgan',
-    full_name: 'Dr. Alex Morgan',
-    date_of_birth: '1995-05-14',
+    name: 'Dr. Ganesh',
+    full_name: 'Dr. Ganesh',
+    date_of_birth: '1996-08-20',
     height_cm: '178',
     weight_kg: '72'
   }

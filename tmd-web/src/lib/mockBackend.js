@@ -7,7 +7,7 @@ import {
   getMockAiResponse
 } from './demoData'
 
-const DEMO_DB_KEY = 'tmd_demo_db_v2'
+const DEMO_DB_KEY = 'tmd_demo_db_v3'
 const DEMO_MODE_FLAG = 'tmd_demo_mode_active'
 
 // Simulated realistic network delay
