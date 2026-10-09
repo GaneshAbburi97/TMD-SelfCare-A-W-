@@ -1,67 +1,111 @@
-const BASE_URL = '/api';
+import { handleMockRequest, isDemoModeActive, setDemoModeActive } from './mockBackend'
+
+const BASE_URL = '/api'
 
 const getHeaders = () => {
-  const token = localStorage.getItem('tmd_token');
+  const token = localStorage.getItem('tmd_token')
   const headers = {
     'Content-Type': 'application/json',
-  };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
   }
-  return headers;
-};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+  return headers
+}
 
 const handleResponse = async (response) => {
   if (!response.ok) {
-    let errorMsg = 'An error occurred';
+    let errorMsg = 'An error occurred'
     try {
-      const errorData = await response.json();
-      errorMsg = errorData.message || errorData.error || errorMsg;
+      const errorData = await response.json()
+      errorMsg = errorData.message || errorData.error || errorMsg
     } catch (e) {
-      errorMsg = response.statusText;
+      errorMsg = response.statusText
     }
-    throw new Error(errorMsg);
+    throw new Error(errorMsg)
   }
-  // Some endpoints might return empty body on success (e.g. DELETE)
   try {
-    return await response.json();
+    return await response.json()
   } catch (e) {
-    return null;
+    return null
   }
-};
+}
 
+/**
+ * Universal API gateway with automatic fallback to in-browser Mock Engine
+ */
 export const api = {
   get: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: getHeaders(),
-    });
-    return handleResponse(response);
+    if (isDemoModeActive()) {
+      return handleMockRequest('GET', endpoint)
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'GET',
+        headers: getHeaders(),
+      })
+      return await handleResponse(response)
+    } catch (err) {
+      console.warn(`[TMD API] Live backend unavailable for GET ${endpoint}. Falling back to In-Browser Demo Engine.`, err)
+      setDemoModeActive(true)
+      return handleMockRequest('GET', endpoint)
+    }
   },
 
   post: async (endpoint, data) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify(data),
-    });
-    return handleResponse(response);
+    if (isDemoModeActive()) {
+      return handleMockRequest('POST', endpoint, data)
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(data),
+      })
+      return await handleResponse(response)
+    } catch (err) {
+      console.warn(`[TMD API] Live backend unavailable for POST ${endpoint}. Falling back to In-Browser Demo Engine.`, err)
+      setDemoModeActive(true)
+      return handleMockRequest('POST', endpoint, data)
+    }
   },
 
   put: async (endpoint, data) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: getHeaders(),
-      body: JSON.stringify(data),
-    });
-    return handleResponse(response);
+    if (isDemoModeActive()) {
+      return handleMockRequest('PUT', endpoint, data)
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify(data),
+      })
+      return await handleResponse(response)
+    } catch (err) {
+      console.warn(`[TMD API] Live backend unavailable for PUT ${endpoint}. Falling back to In-Browser Demo Engine.`, err)
+      setDemoModeActive(true)
+      return handleMockRequest('PUT', endpoint, data)
+    }
   },
 
   delete: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'DELETE',
-      headers: getHeaders(),
-    });
-    return handleResponse(response);
+    if (isDemoModeActive()) {
+      return handleMockRequest('DELETE', endpoint)
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'DELETE',
+        headers: getHeaders(),
+      })
+      return await handleResponse(response)
+    } catch (err) {
+      console.warn(`[TMD API] Live backend unavailable for DELETE ${endpoint}. Falling back to In-Browser Demo Engine.`, err)
+      setDemoModeActive(true)
+      return handleMockRequest('DELETE', endpoint)
+    }
   },
-};
+}

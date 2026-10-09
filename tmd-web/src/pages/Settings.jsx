@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useTheme } from '../context/ThemeContext'
-import { Moon, Sun, Bell, Lock, Globe, Database, User } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+import { Moon, Sun, Bell, Globe, Database, User, Sparkles, RotateCcw, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 
@@ -20,6 +22,8 @@ const SettingRow = ({ icon: Icon, title, description, action }) => (
 
 export default function Settings() {
   const { theme, toggleTheme, isDark } = useTheme()
+  const { isDemoMode, resetDemoState } = useAuth()
+  const [resetDone, setResetDone] = useState(false)
 
   const handleDataExport = async () => {
     try {
@@ -31,6 +35,7 @@ export default function Settings() {
       
       const exportData = {
         exportedAt: new Date().toISOString(),
+        environment: isDemoMode ? 'Demo Mode (In-Browser Mock DB)' : 'Production / Live Backend',
         records: {
           painLogs: pain,
           sleepLogs: sleep,
@@ -55,11 +60,20 @@ export default function Settings() {
     }
   }
 
+  const handleResetDemo = () => {
+    resetDemoState()
+    setResetDone(true)
+    setTimeout(() => {
+      setResetDone(false)
+      window.location.reload()
+    }, 1200)
+  }
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ marginBottom: '0.25rem' }}>Platform Settings</h1>
-        <p className="text-secondary">Manage your preferences and platform configuration.</p>
+        <p className="text-secondary">Manage your preferences, demo environment, and platform configuration.</p>
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
@@ -73,16 +87,33 @@ export default function Settings() {
             </button>
           }
         />
+
+        <SettingRow 
+          icon={Sparkles}
+          title="Demo Mode Environment"
+          description="Self-contained in-browser clinical database for portfolio review and demonstrations."
+          action={
+            <button 
+              onClick={handleResetDemo} 
+              className="btn btn-outline"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#059669', borderColor: '#059669' }}
+            >
+              {resetDone ? <><Check size={16} /> Reset Done!</> : <><RotateCcw size={16} /> Reset Demo Data</>}
+            </button>
+          }
+        />
+
         <SettingRow 
           icon={Bell}
           title="Email Notifications"
           description="Receive weekly health reports and exercise reminders."
           action={
             <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-              <input type="checkbox" defaultChecked style={{ width: '20px', height: '20px' }} />
+              <input type="checkbox" defaultChecked style={{ width: '20px', height: '20px', accentColor: 'var(--brand-primary)' }} />
             </label>
           }
         />
+
         <SettingRow 
           icon={Globe}
           title="Measurement Units"
@@ -94,18 +125,20 @@ export default function Settings() {
             </select>
           }
         />
+
         <SettingRow 
           icon={Database}
           title="Data Export"
           description="Download all your logs and configurations as a JSON file."
           action={
-            <button className="btn btn-outline" onClick={handleDataExport}>Download</button>
+            <button className="btn btn-outline" onClick={handleDataExport}>Download JSON</button>
           }
         />
+
         <SettingRow 
           icon={User}
           title="Update Profile"
-          description="Manage your account details and personal information."
+          description="Manage your account details and personal clinical information."
           action={
             <Link to="/profile" className="btn btn-ghost" style={{ color: 'var(--brand-primary)', textDecoration: 'none' }}>Manage</Link>
           }

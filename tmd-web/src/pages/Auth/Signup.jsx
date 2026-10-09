@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { UserPlus } from 'lucide-react'
+import { UserPlus, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react'
 import GoogleAuthButton from '../../components/GoogleAuthButton'
 
 const PASSWORD_SPACE_ERROR = 'Password cannot contain spaces.'
@@ -21,9 +21,10 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => getAuthRedirectError())
   const [loading, setLoading] = useState(false)
+  const [demoLoading, setDemoLoading] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
   
-  const { signUp, user } = useAuth()
+  const { signUp, demoLogin, user } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -32,9 +33,22 @@ export default function Signup() {
     }
 
     if (user) {
-      navigate('/profile')
+      navigate('/dashboard')
     }
   }, [user, navigate])
+
+  const handleDemoAccess = async () => {
+    setDemoLoading(true)
+    setError(null)
+    try {
+      await demoLogin()
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Failed to initialize demo mode: ' + err.message)
+    } finally {
+      setDemoLoading(false)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -81,7 +95,7 @@ export default function Signup() {
     // Strict Whitelist of Allowed Email Providers
     const allowedDomains = [
       'gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 
-      'icloud.com', 'aol.com', 'protonmail.com', 'zoho.com'
+      'icloud.com', 'aol.com', 'protonmail.com', 'zoho.com', 'tmdcare.com'
     ]
     
     if (!allowedDomains.includes(domain)) {
@@ -98,7 +112,6 @@ export default function Signup() {
       setError(PASSWORD_SPACE_ERROR)
       return
     }
-
 
     setLoading(true)
 
@@ -117,8 +130,8 @@ export default function Signup() {
       if (data?.user?.identities?.length === 0) {
         setError('This email is already registered.')
       } else {
-        setSuccessMsg('Successfully signed up! Please check your email to verify your account or proceed to login.')
-        setTimeout(() => navigate('/login'), 3000)
+        setSuccessMsg('Successfully signed up! Proceeding to your portal...')
+        setTimeout(() => navigate('/dashboard'), 1500)
       }
     } catch (err) {
       setError(err.message)
@@ -139,21 +152,66 @@ export default function Signup() {
   }
 
   return (
-    <div className="app-container" style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <div className="glass-panel" style={{ padding: '2rem', width: '100%', maxWidth: '400px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h1 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Create Account</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Join us on your wellness journey</p>
+    <div className="app-container" style={{ alignItems: 'center', justifyContent: 'center', padding: '1.5rem 1rem' }}>
+      <div className="glass-panel" style={{ padding: '2rem', width: '100%', maxWidth: '420px', borderRadius: '16px' }}>
+        
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <h1 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>Create Account</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Join the TMD Self-Care Platform</p>
+        </div>
+
+        {/* ⚡ One-Click Instant Demo Box */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(16, 185, 129, 0.12))',
+          border: '1px solid rgba(37, 99, 235, 0.25)',
+          borderRadius: '12px',
+          padding: '1rem',
+          marginBottom: '1.5rem',
+          textAlign: 'center'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.25rem', color: 'var(--brand-primary)', fontWeight: 700, fontSize: '0.95rem' }}>
+            <Sparkles size={18} />
+            <span>Fast Reviewer Access</span>
+          </div>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 0.75rem 0' }}>
+            Skip registration and immediately tour all features with pre-seeded clinical data.
+          </p>
+          <button 
+            type="button" 
+            onClick={handleDemoAccess}
+            disabled={demoLoading}
+            className="btn btn-primary"
+            style={{ 
+              width: '100%', 
+              background: 'linear-gradient(135deg, var(--brand-primary), #059669)',
+              border: 'none',
+              fontWeight: 700,
+              fontSize: '0.925rem',
+              padding: '0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            {demoLoading ? 'Initializing Demo...' : (
+              <>
+                <ShieldCheck size={18} />
+                Try Demo Mode (1-Click)
+                <ArrowRight size={16} />
+              </>
+            )}
+          </button>
         </div>
 
         {error && (
-          <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--error-color)', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+          <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--error-color)', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.25rem', fontSize: '0.875rem' }}>
             {error}
           </div>
         )}
 
         {successMsg && (
-          <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--success-color)', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+          <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--success-color)', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.25rem', fontSize: '0.875rem' }}>
             {successMsg}
           </div>
         )}
@@ -203,7 +261,7 @@ export default function Signup() {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
+          <button type="submit" className="btn btn-outline" style={{ width: '100%', marginTop: '0.75rem', justifyContent: 'center' }} disabled={loading}>
             {loading ? 'Creating account...' : (
               <>
                 <UserPlus size={18} style={{ marginRight: '8px' }} />
@@ -213,20 +271,20 @@ export default function Signup() {
           </button>
         </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', margin: '1.25rem 0' }}>
           <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--surface-border)' }}></div>
-          <span style={{ padding: '0 1rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>or</span>
+          <span style={{ padding: '0 0.75rem', color: 'var(--text-muted)', fontSize: '0.8rem' }}>or</span>
           <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--surface-border)' }}></div>
         </div>
 
         <GoogleAuthButton
           mode="signup"
-          onSuccess={() => navigate('/profile')}
+          onSuccess={() => navigate('/dashboard')}
           onError={(err) => setError(err.message)}
         />
 
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          Already have an account? <Link to="/login" style={{ fontWeight: 600 }}>Sign in</Link>
+        <div style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          Already have an account? <Link to="/login" style={{ fontWeight: 600, color: 'var(--brand-primary)' }}>Sign in</Link>
         </div>
       </div>
     </div>
