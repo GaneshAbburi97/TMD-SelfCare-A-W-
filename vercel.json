@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd tmd-web && npm install && npm run build",
+  "outputDirectory": "tmd-web/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
